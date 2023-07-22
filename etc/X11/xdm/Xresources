@@ -1,0 +1,31 @@
+! /etc/X11/xdm/Xresources
+
+! What takes up most of the login window real estate
+xlogin*Background: #000000
+! Add a border to the login window
+!xlogin*borderWidth: 1
+
+! String displayed on top of login window; CLIENTHOST means long hostname
+xlogin*greeting: CLIENTHOST  
+! Font for said string
+xlogin*greetFace: FreeSans-24:bold:italic
+
+! Color of input fields
+xlogin*Foreground: white
+! Login/Password character input font
+xlogin*face: FreeSans-18
+! Color of said font
+xlogin*foreground: black
+
+! Login/Password prompt font
+xlogin*promptFace: FreeSans-18:bold
+
+! String displayed when login fails
+xlogin*fail: Login incorrect or forbidden by policy
+! Font for said string
+xlogin*failFace: FreeSans-18:bold
+! Color for said string
+xlogin*failColor: red
+
+! * character for password input
+!xlogin.Login.echoPasswd: true

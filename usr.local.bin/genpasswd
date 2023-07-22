@@ -1,0 +1,6 @@
+#!/bin/sh
+
+tr -dc \
+	'aAbBcCdDeEfFgGhHjJkKmMnNoOpPqQrRsStTuUvVwWxXyYzZ234567890!@$%^&*()-_=+[{]}:,<.>?' \
+	< /dev/urandom | head -c 24
+printf '\n'

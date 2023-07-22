@@ -1,0 +1,16 @@
+#!/bin/sh
+
+increment=1
+
+x=100
+level="$(while [ "$x" -ge 0 ]; do
+	printf '%s\n' "$x"
+	x=$((x - increment))
+done | dmenu -i)"
+
+if [ -z "$level" ]; then
+	exit 1
+else
+	amixer sset Master "$level"% >/dev/null 2>&1
+	exit "0"
+fi

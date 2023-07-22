@@ -1,0 +1,50 @@
+#!/bin/sh
+
+while true; do
+	action="$(printf '%s\n' \
+		'Browser' \
+		'Volume' \
+		'Networking' \
+		'Virtual Machines' \
+		'Passwords' \
+		'Display' \
+		'System' | \
+       		dmenu -i -l "$DMENULINENUM")"
+	
+	[ -z "$action" ] && exit 1
+	
+	case "$action" in
+		Browser)
+			exec $BROWSER
+		;;
+		RSS)
+			dmenu_rss && exit 0
+		;;
+		Terminal)
+			# tabbed(1) interferes with externalpipe
+			#exec tabbed -g 1200x750 -r 2 st -w ''
+			exec st -w ''
+		;;
+		Volume)
+			dmenu_volume && exit 0
+		;;
+		Networking)
+			exec st -w '' nmtui
+		;;
+		'Virtual Machines')
+			vm="$(for vmdir in /var/vm/*; do
+				[ -d "$vmdir" ] && basename "$vmdir"
+			done | dmenu -i -l "$DMENULINENUM")"
+			exec st -e doas vm.sh "$vm" delay
+		;;
+		Passwords)
+			dmenu_passwd && exit 0
+		;;
+		Display)
+			dmenu_display && exit 0
+		;;
+		System)
+			dmenu_system && exit 0
+		;;
+	esac
+done

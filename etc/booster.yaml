@@ -1,0 +1,5 @@
+# /etc/booster.yaml
+
+compression: none
+mount_timeout: 60s
+universal: false

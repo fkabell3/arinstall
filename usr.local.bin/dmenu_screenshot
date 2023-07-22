@@ -1,0 +1,28 @@
+#!/bin/sh
+
+dir="$HOME"/images
+
+if [ -f "$dir"/screenshot"$(date +%d%b%g)" ]; then
+	datetime=$(date +%d%b%g-%T)
+else
+	datetime=$(date +%d%b%g)
+fi
+
+action="$(printf '%s\n' \
+	'Whole Screen' \
+	'Box Draw' | \
+	dmenu -i)"
+
+case "$action" in
+	'Whole Screen')
+		scrot $dir/screenshot"$datetime"
+	;;
+	'Box Draw')
+		scrot -s $dir/screenshot"$datetime"
+	;;
+	*)
+		false
+	;;
+esac
+
+exit "$?"

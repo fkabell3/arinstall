@@ -1,0 +1,58 @@
+#!/bin/sh
+
+_slock=0
+if [ -x /sbin/openrc-init ]; then
+	init=openrc
+elif [ -x /usr/lib/systemd/systemd ]; then
+	init=systemd
+else
+	exit 1
+fi
+
+while true; do
+	action="$(printf '%s\n' \
+		'Suspend' \
+		'Hibernate' \
+		'Logout' \
+		'Reboot' \
+		'Shutdown' | \
+		dmenu -i -l "$DMENULINENUM")"
+
+	[ -z "$action" ] && exit 1
+	
+	case "$action" in
+		Suspend)
+			[ "$_slock" -eq 1 ] && slock &
+			if [ X"$init" = X'openrc' ]; then
+				exec doas loginctl suspend
+			elif [ X"$init" = X'systemd' ]; then
+				exec systemctl suspend
+			fi
+		;;
+		Hibernate)
+			[ "$_slock" -eq 1 ] && slock &
+			if [ X"$init" = X'openrc' ]; then
+				exec doas loginctl hibernate
+			elif [ X"$init" = X'systemd' ]; then
+				exec doas systemctl hibernate
+			fi
+		;;
+		Logout)
+			exec pkill -u "$(whoami)"
+		;;
+		Reboot)
+			if [ X"$init" = X'openrc' ]; then
+				exec doas openrc-shutdown -r now
+			elif [ X"$init" = X'systemd' ]; then
+				exec shutdown -r now
+			fi
+		;;
+		Shutdown)
+			if [ X"$init" = X'openrc' ]; then
+				exec doas openrc-shutdown -p now
+			elif [ X"$init" = X'systemd' ]; then
+				exec shutdown -P now
+			fi
+		;;
+	esac 
+done

@@ -1,0 +1,175 @@
+diff -ruN a/Makefile b/Makefile
+--- a/Makefile	2023-06-06 00:44:58.796077883 -0500
++++ b/Makefile	2023-06-06 00:44:52.659411365 -0500
+@@ -46,23 +46,25 @@
+ 
+ BIN = \
+ 	sfeed\
+-	sfeed_atom\
+-	${SFEED_CURSES}\
+-	sfeed_frames\
+-	sfeed_gopher\
+-	sfeed_html\
+-	sfeed_json\
+-	sfeed_mbox\
+-	sfeed_opml_import\
+-	sfeed_plain\
+-	sfeed_twtxt\
+-	sfeed_web\
++	sfeed_plain_trimmed\
+ 	sfeed_xmlenc
++	#sfeed_atom\
++	#${SFEED_CURSES}\
++	#sfeed_frames\
++	#sfeed_gopher\
++	#sfeed_html\
++	#sfeed_json\
++	#sfeed_mbox\
++	#sfeed_opml_import\
++	#sfeed_plain\
++	#sfeed_twtxt\
++	#sfeed_web\
++
+ SCRIPTS = \
+-	sfeed_content\
+-	sfeed_markread\
+-	sfeed_opml_export\
+ 	sfeed_update
++	#sfeed_content\
++	#sfeed_markread\
++	#sfeed_opml_export\
+ 
+ SRC = ${BIN:=.c}
+ HDR = \
+diff -ruN a/sfeed_plain_trimmed.1 b/sfeed_plain_trimmed.1
+--- a/sfeed_plain_trimmed.1	1969-12-31 18:00:00.000000000 -0600
++++ b/sfeed_plain_trimmed.1	2023-06-06 00:47:04.806074853 -0500
+@@ -0,0 +1,39 @@
++.Dd May 14, 2022
++.Dt SFEED_PLAIN_TRIMMED 1
++.Os
++.Sh NAME
++.Nm sfeed_plain_trimmed
++.Nd format feed data to a plain-text list
++.Sh SYNOPSIS
++.Nm
++.Op Ar
++.Sh DESCRIPTION
++.Nm
++formats feed data (TSV) from
++.Xr sfeed 1
++from stdin or for each
++.Ar file
++to stdout as a plain-text list.
++If one or more
++.Ar file
++arguments are specified then the basename of the
++.Ar file
++is used as the feed name in the output.
++If no
++.Ar file
++arguments are specified and so the data is read from stdin then the feed name
++is empty.
++.Pp
++This modified version of sfeed_plain has two fields, seperated by a single tab. The first field is the title, and the second is the link.
++.Sh EXIT STATUS
++.Ex -std
++.Sh EXAMPLES
++.Bd -literal
++curl -s 'https://codemadness.org/atom.xml' | sfeed | sfeed_plain_trimmed
++.Ed
++.Sh SEE ALSO
++.Xr sfeed 1 ,
++.Xr sfeed_html 1 ,
++.Xr sfeed 5
++.Sh AUTHORS
++.An Hiltjo Posthuma Aq Mt hiltjo@codemadness.org
+diff -ruN a/sfeed_plain_trimmed.c b/sfeed_plain_trimmed.c
+--- a/sfeed_plain_trimmed.c	1969-12-31 18:00:00.000000000 -0600
++++ b/sfeed_plain_trimmed.c	2023-06-06 00:44:52.662744699 -0500
+@@ -0,0 +1,85 @@
++#include <locale.h>
++#include <stdio.h>
++#include <string.h>
++#include <time.h>
++
++#include "util.h"
++
++static time_t comparetime;
++static char *line;
++static size_t linesize;
++
++static void
++printfeed(FILE *fp, const char *feedname)
++{
++	char *fields[FieldLast];
++	struct tm rtm, *tm;
++	time_t parsedtime;
++	ssize_t linelen;
++
++	while ((linelen = getline(&line, &linesize, fp)) > 0 &&
++	       !ferror(stdout)) {
++		if (line[linelen - 1] == '\n')
++			line[--linelen] = '\0';
++		parseline(line, fields);
++
++		parsedtime = 0;
++		/* if (!strtotime(fields[FieldUnixTimestamp], &parsedtime) &&
++		    (tm = localtime_r(&parsedtime, &rtm))) {
++			if (parsedtime >= comparetime)
++				fputs("N ", stdout);
++			else
++				fputs("  ", stdout);
++			fprintf(stdout, "%04d-%02d-%02d %02d:%02d  ",
++			        tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
++			        tm->tm_hour, tm->tm_min);
++		} else {
++			fputs("                    ", stdout);
++		}
++
++		if (feedname[0]) {
++			printutf8pad(stdout, feedname, 15, ' ');
++			fputs("  ", stdout);
++		}
++		printutf8pad(stdout, fields[FieldTitle], 70, ' ');
++		printf(" %s\n", fields[FieldLink]); */
++		printf("%s\t%s\n", fields[FieldTitle], fields[FieldLink]);
++	}
++}
++
++int
++main(int argc, char *argv[])
++{
++	FILE *fp;
++	char *name;
++	int i;
++
++	if (pledge("stdio rpath", NULL) == -1)
++		err(1, "pledge");
++
++	setlocale(LC_CTYPE, "");
++
++	if (pledge(argc == 1 ? "stdio" : "stdio rpath", NULL) == -1)
++		err(1, "pledge");
++
++	if ((comparetime = getcomparetime()) == (time_t)-1)
++		errx(1, "getcomparetime");
++
++	if (argc == 1) {
++		printfeed(stdin, "");
++		checkfileerror(stdin, "<stdin>", 'r');
++	} else {
++		for (i = 1; i < argc; i++) {
++			if (!(fp = fopen(argv[i], "r")))
++				err(1, "fopen: %s", argv[i]);
++			name = ((name = strrchr(argv[i], '/'))) ? name + 1 : argv[i];
++			printfeed(fp, name);
++			checkfileerror(fp, argv[i], 'r');
++			checkfileerror(stdout, "<stdout>", 'w');
++			fclose(fp);
++		}
++	}
++	checkfileerror(stdout, "<stdout>", 'w');
++
++	return 0;
++}

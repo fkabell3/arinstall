@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Seconds between feed update
+interval=43200
+
+dir="$HOME"/.sfeed
+lsfeed() {
+	sfeed_plain_trimmed "$dir/feeds/$feed"
+}
+
+if ! [ "$(expr $(date +%s) - $(cat "$dir"/lastautoupdate 2>/dev/null))" \
+	-lt "$interval" ]; then
+	sfeed_update
+	date +%s > $dir/lastautoupdate
+fi
+
+while true; do
+	feed="$(grep 'feed "[^"]*" "[^"]*"' $dir/sfeedrc | cut -d \" -f 2 | \
+		dmenu -i -l "$DMENULINENUM")"
+	[ -z "$feed" ] && break
+	while true; do
+		selection="$(lsfeed | awk -F '\t' '{ print $1 }'| \
+			dmenu -i -l "$DMENULINENUM")"
+		[ -z "$selection" ] && break
+		eval "$BROWSER $(lsfeed | grep "$selection" | \
+			awk -F '\t' '{ print $2 }')" & exit 0
+	done
+done

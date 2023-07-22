@@ -1,0 +1,9 @@
+# $HOME/.sfeed/sfeedrc
+
+#sfeedpath="$HOME/.sfeed/feeds"
+
+feeds() {
+	# feed <name> <feedurl> [basesiteurl] [encoding]
+	# For YouTube, the <feedurl> is:
+	# https://www.youtube.com/feeds/videos.xml?channel_id=<Channel ID>
+}

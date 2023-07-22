@@ -1,0 +1,15 @@
+#!/bin/sh
+
+dir="$HOME"/.passwords
+field=5
+
+copy() {
+	xclip -selection clipboard
+}
+
+passwd="$(find "$dir" -type f | cut -d / -f "$field"- | sort | \
+	dmenu -i -l "$DMENULINENUM")"
+grep -v '^#' "$dir/$passwd" | copy
+
+sleep 30
+printf '' | copy

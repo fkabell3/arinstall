@@ -1,0 +1,45 @@
+#!/bin/sh
+# /etc/X11/xinit/xinitrc
+
+if [ -d /etc/X11/xinit/xinitrc.d ]; then
+ for file in /etc/X11/xinit/xinitrc.d/?*.sh; do
+  [ -x "$file" ] && . "$file"
+ done
+ unset file
+fi
+
+# Changes font/scale settings on programs such as packettracer and wireshark
+QT_DEVICE_PIXEL_RATIO=2
+export QT_DEVICE_PIXEL_RATIO
+
+# Max lines dmenu(1) will (sometimes) display in /usr/local/bin/dmenu_* scripts
+# dmenu has been built to hide any extra lines that are empty
+DMENULINENUM=25
+export DMENULINENUM
+
+# LibreWolf/Firefox font/scale settings can be changed with 
+# about:config -> layout.css.devPixelsPerPx
+BROWSER="librewolf -P default"
+export BROWSER
+
+# Permit any user to run X applications (needed for /usr/local/bin/vm.sh)
+# Potentially a security risk, but network is disallowed access to X anyways
+xhost +local:
+
+# Enable keyboard based cursor navigation
+keynav &
+
+# Enable translucency
+picom --blur-method box &
+
+# Enable status bar
+statusbar.sh &
+
+# Mute volume
+#amixer sset Master 0% >/dev/null 2>&1
+
+# Start off in floating layout
+#(sleep .3; xdotool key super+f) &
+
+# Start the suckless.org Dynamic Window Manager
+exec dwm

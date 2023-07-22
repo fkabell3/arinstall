@@ -40,17 +40,17 @@ Either plug in an Ethernet cable or for WiFi try:<br>
 <details>
   <summary>Artix</summary>
 
-`rfkill`
-# num is the number in the first field of the line whos second field is wlan
-`rfkill unblock <num>`
-
-`connmanctl`
-`connmanctl> scan wifi`
-`connmanctl> services`
-`connmanctl> agent on`
-ID is the 2nd field of the line containing your SSID (string starting with `wifi_')
-Note that tab completion is available
-`connmanctl> connect <ID>`
+`rfkill`<br>
+num is the number in the first field of the line whos second field is wlan<br>
+`rfkill unblock <num>`<br>
+<br>
+`connmanctl`<br>
+`connmanctl> scan wifi`<br>
+`connmanctl> services`<br>
+`connmanctl> agent on`<br>
+ID is the 2nd field of the line containing your SSID (string starting with \`wifi_')<br>
+Note that tab completion is available<br>
+`connmanctl> connect <ID>`<br>
 
 </details>
 

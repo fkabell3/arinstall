@@ -1,4 +1,4 @@
-# Computer won't boot with EFI (options B(GPT/Limine) & C(GPT/EFI stub))
+# Computer won't boot with EFI (options B(GPT/Limine) & A(GPT/EFI stub))
 If you use EFI, efibootmgr(8) may silently fail depending on your motherboard's firmware. If that is the case, your computer will not boot and you must launch an EFI shell to resolve the situation.<br>
 Here are two ways to launch an EFI shell:<br>
         1) Reboot into the Arch live installation .iso, and then select `UEFI Shell` in GRUB menu (easiest)<br>
@@ -19,6 +19,9 @@ Reboot:<br>
         `Shell> reset`<br>
 Now your computer should boot normally if it didn't before.<br>
 
+# Filesystem mounting fails before pacstrap/basestrap
+Make sure you do not have duplicate filesystem labels on disk. For instance, if `/dev/vg/rootfs` has `LABEL=rootfs`, make sure another filesystem such as on `nvme0n1p1` does not have the same `LABEL=rootfs` (check with `blkid`). I ran into this error when testing a new version of the script on a computer formatted with a very old version. The solution was to `wipefs -af /dev/$diskp<num>` on the affected partitions.
+
 # systemd prevents boot stating \`A start job is running for TPM2 ...'
 Disable TPM in firmware settings.<br>
-I don't think this is a problem with the script but rather a problem with my personal hardware. Just in case I'm wrong, I included it in this document.<br>
+I think this problem is related to faulty hardware.

@@ -41,14 +41,14 @@ Either plug in an Ethernet cable or for WiFi try:<br>
   <summary>Artix</summary>
 
 `rfkill`<br>
-num is the number in the first field of the line whos second field is wlan<br>
+`<num>` is the number in the first field of the line whos second field is `wlan`<br>
 `rfkill unblock <num>`<br>
 <br>
 `connmanctl`<br>
 `connmanctl> scan wifi`<br>
 `connmanctl> services`<br>
 `connmanctl> agent on`<br>
-ID is the 2nd field of the line containing your SSID (string starting with \`wifi_')<br>
+`<ID>` is the second field of the line containing your SSID (string starting with `wifi_`)<br>
 Note that tab completion is available<br>
 `connmanctl> connect <ID>`<br>
 
@@ -78,6 +78,6 @@ If there is only one background, it is chosen by default. If there is more than 
 * Enable the installed LibreWolf addons/theme by starting a browser and going to the `about:addons` URL.
 * Place passwords in `$HOME/.passwords`. You can create a new secure password by redirecting stdout from `genpasswd`.
 
-Please inform me if the scipt fails on your system (after TROUBLESHOOTING.md).<br>
+Please send me the output of execution trace (`set -x`) if the script fails on your system.<br>
 Your feedback is appreciated.<br>
 Thanks!

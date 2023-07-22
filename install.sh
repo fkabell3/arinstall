@@ -24,8 +24,8 @@ kernelcmdline='root=LABEL=rootfs rw resume=LABEL=swap quiet bgrt_disable'
 # Enabled system services
 services='gpm NetworkManager xdm'
 # Comment out this variable to disable LibreWolf browser installation
-librewolf_addons='ublock-origin sponsorblock istilldontcareaboutcookies
-clearurls darkreader complete-black-theme-for-firef'
+#librewolf_addons='ublock-origin sponsorblock istilldontcareaboutcookies
+#clearurls darkreader complete-black-theme-for-firef'
 # Note: Caps Lock and Escape are swapped
 # This and the locale have not been tested when changed
 keymap='/usr/share/kbd/keymaps/i386/qwerty/us.map'
@@ -543,26 +543,6 @@ default='localhost.localdomain'
 _default=" [$default]"
 userquery hostname "Input hostname$_default: "
 
-if [ X"$sourceos" = X'arch' ] && [ X"$targetos" = X'artix' ]; then
-	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/artix.conf > /etc/pacman.conf
-	curl https://gitea.artixlinux.org/packages/artix-mirrorlist/raw/branch/master/trunk/mirrorlist -o /etc/pacman.d/mirrorlist
-	pacman --noconfirm -Scc
-	pacman --noconfirm -Syy
-	pacman --noconfirm -S artix-keyring
-	pacman-key --populate artix
-elif [ X"$sourceos" = X'artix' ] && [ X"$targetos" = X'arch' ]; then
-	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/arch.conf > /etc/pacman.conf
-	curl https://archlinux.org/mirrorlist/all/https/ -o /etc/pacman.d/mirrorlist
-	pacman --noconfirm -Scc
-	pacman --noconfirm -Syy
-	pacman --noconfirm -S archlinux-keyring
-	pacman-key --populate archlinux
-else
-	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/' /etc/pacman.conf
-	pacman -Sy --noconfirm "$keyring"
-fi
-	
-
 # Gibibytes of storage available on $drive
 # minus 1 gibi for metadata
 storage=$(($(grep "$disk$" /proc/partitions | \
@@ -719,6 +699,27 @@ elif [ "$uselvm" -eq 1 ]; then
 	lslabels excluded | while read line; do
 		eval "automkfs $line"
 	done 
+fi
+
+if [ X"$sourceos" = X'arch' ] && [ X"$targetos" = X'artix' ]; then
+	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/artix.conf \
+		> /etc/pacman.conf
+	curl https://gitea.artixlinux.org/packages/artix-mirrorlist/raw/branch/master/mirrorlist \
+		-o /etc/pacman.d/mirrorlist
+	pacman --noconfirm -Scc
+	pacman --noconfirm -Syy
+	pacman --noconfirm -S artix-keyring
+	pacman-key --populate artix
+elif [ X"$sourceos" = X'artix' ] && [ X"$targetos" = X'arch' ]; then
+	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/arch.conf > /etc/pacman.conf
+	curl https://archlinux.org/mirrorlist/all/https/ -o /etc/pacman.d/mirrorlist
+	pacman --noconfirm -Scc
+	pacman --noconfirm -Syy
+	pacman --noconfirm -S archlinux-keyring
+	pacman-key --populate archlinux
+else
+	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/' /etc/pacman.conf
+	pacman -Sy --noconfirm "$keyring"
 fi
 
 system_pkgs='base linux linux-firmware booster opendoas git'

@@ -24,8 +24,8 @@ kernelcmdline='root=LABEL=rootfs rw resume=LABEL=swap quiet bgrt_disable'
 # Enabled system services
 services='gpm NetworkManager xdm'
 # Comment out this variable to disable LibreWolf browser installation
-#librewolf_addons='ublock-origin sponsorblock istilldontcareaboutcookies
-#clearurls darkreader complete-black-theme-for-firef'
+librewolf_addons='ublock-origin sponsorblock istilldontcareaboutcookies
+clearurls darkreader complete-black-theme-for-firef'
 # Note: Caps Lock and Escape are swapped
 # This and the locale have not been tested when changed
 keymap='/usr/share/kbd/keymaps/i386/qwerty/us.map'

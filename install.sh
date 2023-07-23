@@ -325,13 +325,13 @@ if which basestrap >/dev/null 2>&1; then
 	init=openrc
 	bootstrap=basestrap
 	editor=vi
-	keyring=artix-keyring
+	keyring=artix
 elif which pacstrap >/dev/null 2>&1; then
 	sourceos=arch
 	init=systemd
 	bootstrap=pacstrap
 	editor=vim
-	keyring=archlinux-keyring
+	keyring=archlinux
 else
 	die 'Neither pacstrap(8) nor basestrap(8) found.'
 fi
@@ -701,25 +701,25 @@ elif [ "$uselvm" -eq 1 ]; then
 	done 
 fi
 
-if [ X"$sourceos" = X'arch' ] && [ X"$targetos" = X'artix' ]; then
-	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/artix.conf \
-		> /etc/pacman.conf
-	curl https://gitea.artixlinux.org/packages/artix-mirrorlist/raw/branch/master/mirrorlist \
-		-o /etc/pacman.d/mirrorlist
+if [ X"$sourceos" != X"$targetos" ]; then
+	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/"$targetos".conf > /etc/pacman.conf
+	if [ X"$targetos" = X'artix' ]; then
+		curl https://gitea.artixlinux.org/packages/artix-mirrorlist/raw/branch/master/mirrorlist \
+			-o /etc/pacman.d/mirrorlist
+		keyring=artix
+	elif [ X"$targetos" = X'arch' ]; then
+		curl https://archlinux.org/mirrorlist/all/https/ -o /etc/pacman.d/mirrorlist
+		keyring=archlinux
+	fi
 	pacman --noconfirm -Scc
 	pacman --noconfirm -Syy
-	pacman --noconfirm -S artix-keyring
-	pacman-key --populate artix
-elif [ X"$sourceos" = X'artix' ] && [ X"$targetos" = X'arch' ]; then
-	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/arch.conf > /etc/pacman.conf
-	curl https://archlinux.org/mirrorlist/all/https/ -o /etc/pacman.d/mirrorlist
-	pacman --noconfirm -Scc
-	pacman --noconfirm -Syy
-	pacman --noconfirm -S archlinux-keyring
-	pacman-key --populate archlinux
+	pacman --noconfirm -S "$keyring"-keyring
+	pacman-key --populate "$keyring"
+	sed -i 's/SigLevel = Never/#SigLevel = Never/' /etc/pacman.conf
+	sed -i 's/#SigLevel = Required DatabaseOptional/SigLevel = Required DatabaseOptional/' /etc/pacman.conf
 else
 	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/' /etc/pacman.conf
-	pacman -Sy --noconfirm "$keyring"
+	pacman --noconfirm -S "$keyring"-keyring
 fi
 
 system_pkgs='base linux linux-firmware booster opendoas git'
@@ -926,7 +926,7 @@ for skeletons in documents downloads images .passwords; do
 done
 
 if [ X"$targetos" = X"artix" ]; then
-	useradd -c "$usergecos" -G wheel,vm,network,power -m "$username"
+	useradd -c "$usergecos" -G wheel,vm,audio,network,power -m "$username"
 	sed -i -f - /etc/doas.conf <<- EOF
 6i \\
 permit nopass  :network	as root cmd nmcli \\

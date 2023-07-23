@@ -1,5 +1,6 @@
-# Computer won't boot with EFI (options B(GPT/Limine) & A(GPT/EFI stub))
-If you use EFI, efibootmgr(8) may silently fail depending on your motherboard's firmware. If that is the case, your computer will not boot and you must launch an EFI shell to resolve the situation.<br>
+# Computer won't boot with EFI (options A(GPT/EFI stub) & B(GPT/Limine))
+
+If you use EFI, efibootmgr(8) may silently fail depending on your motherboard's firmware. If that is the case, your computer will not boot and you must launch an EFI shell to resolve the situation. Alternatively, I think you could choose option C (PMBR & Limine) as a workaround.<br>
 Here are two ways to launch an EFI shell:<br>
         1) Reboot into the Arch live installation .iso, and then select `UEFI Shell` in GRUB menu (easiest)<br>
         2) Use the computer's firmware file manager to launch `\shellx64.efi` (this script places it there)<br>
@@ -25,6 +26,6 @@ Make sure you do not have duplicate filesystem labels on disk. For instance, if 
 # Sound doesn't work on Artix
 I am still looking into this but I think this is multi level issue. I think on everyone's machine, `pipewire` needs configuration (see this [Reddit comment](https://www.reddit.com/r/artixlinux/comments/s3p380/comment/htl6cvr/?context=3).). On my machine, `aplayer -l` shows no available soundcards, but `cat /proc/asound/cards` shows one. Again, I think these are two seperate issues. Will update this document when I have get this figured out.
 
-# systemd prevents boot stating \`A start job is running for TPM2 ...'
+# systemd (not OpenRC) prevents boot stating \`A start job is running for TPM2 ...'
 Disable TPM in firmware settings.<br>
 I think this problem is related to faulty hardware.

@@ -40,10 +40,7 @@ Either plug in an Ethernet cable or for WiFi try:<br>
 <details>
   <summary>Artix</summary>
 
-`rfkill`<br>
-`<num>` is the number in the first field of the line whos second field is `wlan`<br>
-`rfkill unblock <num>`<br>
-<br>
+`rfkill unblock wlan`<br>
 `connmanctl`<br>
 `connmanctl> scan wifi`<br>
 `connmanctl> services`<br>

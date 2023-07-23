@@ -324,7 +324,11 @@ if which basestrap >/dev/null 2>&1; then
 	sourceos=artix
 	init=openrc
 	bootstrap=basestrap
-	editor=vi
+	if which vim >/dev/null 2>&1; then
+		editor=vim
+	else
+		editor=vi
+	fi
 	keyring=artix
 elif which pacstrap >/dev/null 2>&1; then
 	sourceos=arch
@@ -384,7 +388,9 @@ fi
 	awk '$2 ~ /0/ && $4 !~ /lvm|crypt|part/ { print $1, $3 }'
 while true; do
 	userquery disk "Input target disk to install Linux$_default: "
-	if ! [ -e /dev/"$disk" ]; then
+	if [ -z "$disk" ]; then
+		true
+	elif ! [ -e /dev/"$disk" ]; then
 		error invalidvar disk "\`/dev/$disk' does not exist"
 		disk=
 	elif ! [ -b /dev/"$disk" ]; then
@@ -599,11 +605,14 @@ while true; do
 	[ "$(awk '/^swap/ { print $2 }' /tmp/disk.swap)" -eq 0 ] && \
 		printf '\n%s\n' \
 		'Bug: allocate at least 1 gibibyte to swap! Sorry!'
-	[ "$free" -lt 0 ] && printf '\n%s\n' \
-		'Warning: more storage allocated than available, this will break script!'
+	if [ "$free" -lt 0 ]; then
+		printf '\n'
+		error 'more storage allocated than available, this will break script!'
+	fi
 	if [ -s /tmp/disk.rej ]; then
-		printf '\n%s\n%s\n' 'Warning: the regular expression:' "$regex"
-		printf '%s' 'did not match line'
+		printf '\n'
+		error 'the regular expression:'
+		printf '%s\n%s' "$regex" 'did not match line'
 		[ "$(wc -l < /tmp/disk.rej)" -gt 1 ] && printf '%s' 's'
 		printf '%s\n' ':'
 		cat /tmp/disk.rej
@@ -644,6 +653,42 @@ while true; do
 	[ "$_break" -eq 1 ] && break
 done
 
+if [ X"$sourceos" != X"$targetos" ]; then
+	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/"$targetos".conf \
+		> /etc/pacman.conf
+	if [ X"$targetos" = X'artix' ]; then
+		curl https://gitea.artixlinux.org/packages/artix-mirrorlist/raw/branch/master/mirrorlist \
+			-o /etc/pacman.d/mirrorlist
+		keyring=artix
+	elif [ X"$targetos" = X'arch' ]; then
+		curl https://archlinux.org/mirrorlist/all/https/ -o \
+			/etc/pacman.d/mirrorlist
+		clear
+		regex='^Server = https://[a-zA-Z0-9./-]*$repo/os/$arch'
+		while true; do
+			printf '%s\n' 'Press ENTER and uncomment a mirror close to you.'
+			read REPLY
+			$editor /etc/pacman.d/mirrorlist
+			grep "$regex" /etc/pacman.d/mirrorlist >/dev/null 2>&1 \
+				&& break
+			clear
+			error 'No lines fit the regex:'
+			printf '%s\n' "$regex" 'Try again.'
+		done
+		keyring=archlinux
+	fi
+	pacman --noconfirm -Scc
+	pacman --noconfirm -Syy
+	pacman --noconfirm -S "$keyring"-keyring
+	pacman-key --populate "$keyring"
+	sed -i 's/SigLevel = Never/#SigLevel = Never/' /etc/pacman.conf
+	sed -i 's/#SigLevel = Required DatabaseOptional/SigLevel = Required DatabaseOptional/' /etc/pacman.conf
+else
+	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/' /etc/pacman.conf
+	pacman --noconfirm -S "$keyring"-keyring
+fi
+
+clear
 printf '%s\n' \
 	'From this point on, if the script fails (eg. curl(1) hangs), reboot before trying again.' \
 	'Press ENTER to wipe partition table and install Linux, CTRL/C to abort.'
@@ -699,27 +744,6 @@ elif [ "$uselvm" -eq 1 ]; then
 	lslabels excluded | while read line; do
 		eval "automkfs $line"
 	done 
-fi
-
-if [ X"$sourceos" != X"$targetos" ]; then
-	cat "$gitdir"/pacman/base.conf "$gitdir"/pacman/"$targetos".conf > /etc/pacman.conf
-	if [ X"$targetos" = X'artix' ]; then
-		curl https://gitea.artixlinux.org/packages/artix-mirrorlist/raw/branch/master/mirrorlist \
-			-o /etc/pacman.d/mirrorlist
-		keyring=artix
-	elif [ X"$targetos" = X'arch' ]; then
-		curl https://archlinux.org/mirrorlist/all/https/ -o /etc/pacman.d/mirrorlist
-		keyring=archlinux
-	fi
-	pacman --noconfirm -Scc
-	pacman --noconfirm -Syy
-	pacman --noconfirm -S "$keyring"-keyring
-	pacman-key --populate "$keyring"
-	sed -i 's/SigLevel = Never/#SigLevel = Never/' /etc/pacman.conf
-	sed -i 's/#SigLevel = Required DatabaseOptional/SigLevel = Required DatabaseOptional/' /etc/pacman.conf
-else
-	sed -i 's/#ParallelDownloads = 5/ParallelDownloads = 8/' /etc/pacman.conf
-	pacman --noconfirm -S "$keyring"-keyring
 fi
 
 system_pkgs='base linux linux-firmware booster opendoas git'

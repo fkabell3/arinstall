@@ -11,6 +11,6 @@ done | dmenu -i)"
 if [ -z "$level" ]; then
 	exit 1
 else
-	amixer sset Master "$level"% >/dev/null 2>&1
-	exit "0"
+	amixer -M sset Master "$level"% >/dev/null 2>&1
+	exit 0
 fi

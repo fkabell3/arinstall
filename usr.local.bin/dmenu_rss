@@ -4,20 +4,22 @@
 interval=43200
 
 dir="$HOME"/.sfeed
+lastautoupdate="$dir"/lastautoupdate
+
 lsfeed() {
 	sfeed_plain_trimmed "$dir/feeds/$feed"
 }
 
-if ! [ "$(expr $(date +%s) - $(cat "$dir"/lastautoupdate 2>/dev/null))" \
-	-lt "$interval" ]; then
+if ! [ -f "$lastautoupdate" ] || ! [ "$(($(date +%s) - $(cat "$lastautoupdate" \
+	2>/dev/null)))" -lt "$interval" ]; then
 	sfeed_update
-	date +%s > $dir/lastautoupdate
+	date +%s > "$lastautoupdate"
 fi
 
 while true; do
 	feed="$(grep 'feed "[^"]*" "[^"]*"' $dir/sfeedrc | cut -d \" -f 2 | \
 		dmenu -i -l "$DMENULINENUM")"
-	[ -z "$feed" ] && break
+	[ -z "$feed" ] && exit 1
 	while true; do
 		selection="$(lsfeed | awk -F '\t' '{ print $1 }'| \
 			dmenu -i -l "$DMENULINENUM")"

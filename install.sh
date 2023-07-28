@@ -524,13 +524,13 @@ userquery repeat rootpasswd 'Input root password: '
 default=
 userquery repeat username 'Input username (added to :wheel): '
 default='Linux User,,,'
-userquery usergecos "Input user GECOS field[$_default]: "
+userquery usergecos "Input user GECOS field [$default]: "
 default=
 userquery repeat userpasswd 'Input user password: '
 while true; do
 	default='UTC'
 	userquery timezone \
-		"Input timezone (as in /usr/share/zoneinfo/)[$_default]: "
+		"Input timezone (as in /usr/share/zoneinfo/) [$default]: "
 	if [ -f "/usr/share/zoneinfo/$timezone" ]; then
 		break
 	elif [ -d "/usr/share/zoneinfo/$timezone" ]; then
@@ -545,7 +545,7 @@ while true; do
 	fi
 done
 default='localhost.localdomain'
-userquery hostname "Input hostname[$_default]: "
+userquery hostname "Input hostname [$default]: "
 
 # Gibibytes of storage available on $drive
 # minus 1 gibi for metadata
@@ -687,7 +687,7 @@ else
 fi
 
 clear
-printf '%s\n' \
+printf '%s\n%s' \
 	'From this point on, if the script fails (eg. curl(1) hangs), reboot before trying again.' \
 	'Press ENTER to wipe partition table and install Linux, CTRL/C to abort.'
 read REPLY

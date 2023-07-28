@@ -351,10 +351,12 @@ if ! which git >/dev/null 2>&1; then
 		# being tolerent to failures because of set -e
 		{ pacman --noconfirm -Sy git && var="$?"; } || var="$?"
 		if [ "$var" -ne 0 ]; then
+			# One of these commands sometimes
+			# fails not sure which one
 			pkill gpg-agent || true
-			rm -rf /etc/pacman.d/gnupg/*
-			pacman-key --init
-			pacman-key --populate
+			rm -rf /etc/pacman.d/gnupg/* || true
+			pacman-key --init || true
+			pacman-key --populate || true
 		else
 			break
 		fi
@@ -372,8 +374,8 @@ else
 		die "git clone failed."
 	gitdir="$PWD"/arinstall
 fi
-clear
 
+clear
 [ X"$(set -o | awk '$1 ~ /errexit/ { print $2 }')" = X'on' ] && \
 	printf '%s\n\n' 'Script exits on any failures.'
 
@@ -486,7 +488,6 @@ if [ "$useluks" -eq 1 ] && [ -z "$lukspasswd" ]; then
 	userquery repeat lukspasswd 'Input disk encrytion password: '
 fi
 
-# Cross installation is not implemented yet.
 printf '%s\n' 'Select init and its corresponding operating system:'
 printf '\t%s\n' \
 	'A) OpenRC  & Artix Linux' \
@@ -523,15 +524,13 @@ userquery repeat rootpasswd 'Input root password: '
 default=
 userquery repeat username 'Input username (added to :wheel): '
 default='Linux User,,,'
-_default=" [$default]"
-userquery usergecos "Input user GECOS field$_default: "
+userquery usergecos "Input user GECOS field[$_default]: "
 default=
 userquery repeat userpasswd 'Input user password: '
 while true; do
 	default='UTC'
-	_default=" [$default]"
 	userquery timezone \
-		"Input timezone (as in /usr/share/zoneinfo/)$_default: "
+		"Input timezone (as in /usr/share/zoneinfo/)[$_default]: "
 	if [ -f "/usr/share/zoneinfo/$timezone" ]; then
 		break
 	elif [ -d "/usr/share/zoneinfo/$timezone" ]; then
@@ -546,8 +545,7 @@ while true; do
 	fi
 done
 default='localhost.localdomain'
-_default=" [$default]"
-userquery hostname "Input hostname$_default: "
+userquery hostname "Input hostname[$_default]: "
 
 # Gibibytes of storage available on $drive
 # minus 1 gibi for metadata
@@ -569,7 +567,7 @@ autosize     home      free          1                 1      NULL
 autosize     swap      total         "$ram"            1      16
 if [ X"$bootmode" = X'efi' ]; then
 autosize     ESP       total         1024              1      2
-   _ESP="ESP      $ESPsize      /boot/efi  vfat  rw,noexec,nosuid,nodev 0 2"
+_ESP="ESP $ESPsize     /boot/efi  vfat  rw,noexec,nosuid,nodev 0 2"
 fi
 
 # For (P)MBR, the boot partition & ESP should be on a

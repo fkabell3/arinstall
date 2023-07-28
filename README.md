@@ -6,9 +6,10 @@ suckless.org's `dwm` and `dmenu` enable a keyboard-centric graphical interface. 
 
 * Trivally spawn virtual machines with a few keystrokes.
 * Quickly lock screen, reboot, and toggle volume/brightness/networking etc.
-* Easily manage passwords with `$HOME/.passwords`, `xclip`, and the `genpasswd` script.
+* Manage passwords with `$HOME/.passwords`, `xclip`, and the `genpasswd` script.
 * Open files and HTTP links with the `st` terminal emulator.
 * Locally manage YouTube subscriptions.
+* Easily control clipboard (images included) with `copy`/`paste` aliases and `clipboard.sh`.
 
 All of this has a consistent UI and can be done without touching a mouse.
 
@@ -71,7 +72,7 @@ Optional Postinstallation Instructions:<br>
 (Spawn terminals with `Super`/`Enter`, spawn application launcher with `Super`/`P`. Read `man 1 dwm`.)
 * Place a background in `/usr/local/share/backgrounds/`.<br>
 If there is only one background, it is chosen by default. If there is more than one, edit `/etc/X11/xdm/Xsetup_0` to specify which one you want.<br>
-* Populate `/var/vm/` with subdirectories which contain a file called disk (`fallocate -l <size>G /var/vm/<name>/disk`) and an .iso file. Then start a virtual machine.
+* Populate `/var/vm/` with subdirectories which contain a file called disk (`fallocate -l <gibibytes>G /var/vm/<name>/disk`) and an .iso file. Then start a virtual machine.
 * Enable the installed LibreWolf addons/theme by starting a browser and going to the `about:addons` URL.
 * Place passwords in `$HOME/.passwords`. You can create a new secure password by redirecting stdout from `genpasswd`.
 * If on Aritx, launch `alsamixer` and raise `PCM` levels to unmute

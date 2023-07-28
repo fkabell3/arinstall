@@ -9,7 +9,7 @@ x=100
 level="$(while [ "$x" -ge "$min" ]; do
 	printf '%s\n' "$x"
 	x=$((x - increment))
-done | dmenu -i)"
+done | dmenu)"
 brightness="$(awk "BEGIN { print $level/100 }")"
 
 xrandr --output "$display" --brightness "$brightness"

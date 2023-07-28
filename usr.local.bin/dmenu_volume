@@ -6,7 +6,7 @@ x=100
 level="$(while [ "$x" -ge 0 ]; do
 	printf '%s\n' "$x"
 	x=$((x - increment))
-done | dmenu -i)"
+done | dmenu)"
 
 if [ -z "$level" ]; then
 	exit 1

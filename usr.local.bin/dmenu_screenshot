@@ -15,10 +15,10 @@ action="$(printf '%s\n' \
 
 case "$action" in
 	'Whole Screen')
-		scrot $dir/screenshot"$datetime"
+		scrot "$dir"/screenshot"$datetime"
 	;;
 	'Box Draw')
-		scrot -s $dir/screenshot"$datetime"
+		scrot -s "$dir"/screenshot"$datetime"
 	;;
 	*)
 		false

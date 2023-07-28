@@ -8,15 +8,12 @@ copy() {
 	xclip -selection clipboard
 }
 
-
-while true; do
-	passwd="$(find "$dir" -type f | cut -d / -f "$field"- | sort | \
-		dmenu -i -l "$DMENULINENUM")"
-	if [ -n "$passwd" ]; then
-		grep -v '^#' "$dir/$passwd" | copy
-		(sleep "$delayclear"; printf '' | copy) &
-		exit 0
-	else
-		exit 1
-	fi
-done
+passwd="$(find "$dir" -type f | cut -d / -f "$field"- | sort | \
+	dmenu -i -l "$DMENULINENUM")"
+if [ -n "$passwd" ]; then
+	grep -v '^#' "$dir/$passwd" | copy
+	(sleep "$delayclear"; printf '' | copy) &
+	exit 0
+else
+	exit 1
+fi

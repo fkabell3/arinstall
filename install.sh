@@ -943,7 +943,7 @@ find "$vmdir" -type f -name '*.iso' -execdir chmod 440 {} +
 find "$vmdir" -type f \( -name drive -o -name drive2 \) \
 	-execdir chmod 660 {} +
 
-for skeletons in documents downloads images .passwords; do
+for skeletons in documents downloads images .passwd; do
 	mkdir /etc/skel/"$skeletons"
 done
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 delayclear=30
-dir="$HOME"/.passwords
+dir="$HOME"/.passwd
 field=5
 
 copy() {

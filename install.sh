@@ -423,7 +423,7 @@ if [ X"$bootmode" = X'bios' ]; then
 	fi
 	disklabel=mbr
 	if [ -n "$bootloader" ] && [ X"$bootloader" != X'limine' ]; then
-		error invalidvar bootloader "using BIOS/MBR, correcting \`_$bootloader'->Limine"
+		error invalidvar bootloader "using BIOS/MBR, correcting \`$_bootloader'->Limine"
 	fi
 	bootloader=limine
 elif [ X"$bootmode" = X'efi' ]; then

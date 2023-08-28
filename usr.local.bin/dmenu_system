@@ -11,9 +11,9 @@ fi
 
 while true; do
 	action="$(printf '%s\n' \
+		'Logout' \
 		'Suspend' \
 		'Hibernate' \
-		'Logout' \
 		'Reboot' \
 		'Shutdown' | \
 		dmenu -i -l "$DMENULINENUM")"
@@ -21,6 +21,9 @@ while true; do
 	[ -z "$action" ] && exit 1
 	
 	case "$action" in
+		Logout)
+			exec pkill -u "$(whoami)"
+		;;
 		Suspend)
 			[ "$_slock" -eq 1 ] && slock &
 			if [ X"$init" = X'openrc' ]; then
@@ -36,9 +39,6 @@ while true; do
 			elif [ X"$init" = X'systemd' ]; then
 				exec doas systemctl hibernate
 			fi
-		;;
-		Logout)
-			exec pkill -u "$(whoami)"
 		;;
 		Reboot)
 			if [ X"$init" = X'openrc' ]; then

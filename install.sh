@@ -1102,7 +1102,7 @@ if [ X"$bootloader" = X'limine' ]; then
 	elif [ X"$bootmode" = X'efi' ]; then
 		cp "$limineprefix"/BOOTX64.EFI /boot/efi/EFI/linux/BOOTX64.EFI
 		efibootmgr -c -d /dev/"$disk" -p "$ESPnum" \
-			-l '\EFI\linux\BOOTX64.EFI'
+			-l '\EFI\linux\BOOTX64.EFI' -L 'Linux'
 	fi
 	# These numbers are guesses
 	if [ "$pixels" -lt 1000000 ]; then

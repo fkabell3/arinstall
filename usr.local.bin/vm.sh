@@ -57,13 +57,13 @@ ckperm() {
 			permseverity=warning
 			status=252
 		;;
-		*disk)
+		*disk.qcow2)
 			write=1
 			existseverity=fatal
 			permseverity=fatal
 			status=253
 		;;
-		*disk2)
+		*disk2.qcow2)
 			write=1
 			existseverity=info
 			permseverity=warning
@@ -182,14 +182,14 @@ else
 	delayexit 236
 fi
 
-disk="$vm/disk"
-disk2="$vm/disk2"
+disk="$vm/disk.qcow2"
+disk2="$vm/disk2.qcow2"
 iso="$(find "$vm" -type f -name *.iso | head -n 1)"
 
 ckperm "$disk"
 if ckperm "$disk2"; then
 	_drive="-drive"
-	disk2="file="$disk2",format=raw"
+	disk2="file="$disk2""
 else
 	disk2=
 fi
@@ -229,7 +229,7 @@ privdrop qemu devour qemu-system-x86_64 \
 	-m "$mebis" \
 	-smp "$vcpu" \
 	-nic bridge,br=virbr0 \
-	-drive file="$disk",format=raw \
+	-drive file="$disk" \
 	"$_drive" "$disk2" \
 	"$_cdrom" "$iso" \
 	>/dev/null 2>&1

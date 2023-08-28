@@ -751,7 +751,7 @@ gui_pkgs="alsa-utils gnu-free-fonts picom scrot xclip xclip xdotool xorg-server
 xorg-xdm xorg-xhost xorg-xinit xorg-xrandr xorg-xsetroot xwallpaper imlib2
 libx11 libxft libxinerama"
 console_pkgs="terminus-font gpm"
-vm_pkgs='qemu-system-x86 qemu-ui-gtk bridge-utils'
+vm_pkgs='qemu-system-x86 qemu-ui-gtk qemu-img bridge-utils'
 # Install base-devel dependencies except sudo
 # (we use doas & doas-sudo-shim instead)
 devel_pkgs="$(pacman -Si base-devel | \

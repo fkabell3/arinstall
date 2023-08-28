@@ -1,5 +1,4 @@
 # Computer won't boot with EFI (options A(GPT/EFI stub) & B(GPT/Limine))
-
 If you use EFI, efibootmgr(8) may silently fail depending on your motherboard's firmware. If that is the case, your computer will not boot and you must launch an EFI shell to resolve the situation. Alternatively, I think you could choose option C (PMBR & Limine) as a workaround.<br>
 Here are two ways to launch an EFI shell:<br>
         1) Reboot into the Arch live installation .iso, and then select `UEFI Shell` in GRUB menu (easiest)<br>
@@ -19,6 +18,9 @@ Now optionally add the EFI shell to the boot order.<br>
 Reboot:<br>
         `Shell> reset`<br>
 Now your computer should boot normally if it didn't before.<br>
+
+# Script fails to download git package due to outdated glibc
+Error message `git:/usr/lib/libc.so.6: version \`GLIBC_<version>' not found (required by git)` is solvable by updating glibc with `pacman -Sy glibc`
 
 # Filesystem mounting fails before pacstrap/basestrap
 Make sure you do not have duplicate filesystem labels on disk. For instance, if `/dev/vg/rootfs` has `LABEL=rootfs`, make sure another filesystem such as on `nvme0n1p1` does not have the same `LABEL=rootfs` (check with `blkid`). I ran into this error when testing a new version of the script on a computer formatted with a very old version. The solution was to `wipefs -af /dev/$diskp<num>` on the affected partitions.

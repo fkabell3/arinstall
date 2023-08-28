@@ -72,7 +72,7 @@ Optional Postinstallation Instructions:<br>
 (Spawn terminals with `Super`/`Enter`, spawn application launcher with `Super`/`P`. Read `man 1 dwm`.)
 * Place a background in `/usr/local/share/backgrounds/`.<br>
 If there is only one background, it is chosen by default. If there is more than one, edit `/etc/X11/xdm/Xsetup_0` to specify which one you want.<br>
-* Populate `/var/vm/` with subdirectories which contain a file called disk.qcow2 (`qemu-img create -f qcow2 /var/vm/<name>/disk.qcow2` \<gibibytes\>G) and an .iso file. Then start a virtual machine.
+* Populate `/var/vm/` with subdirectories which contain a file called `disk.qcow2` (`qemu-img create -f qcow2 /var/vm/<name>/disk.qcow2 <gibibytes>G`) and an .iso file. Then start a virtual machine.
 * Enable the installed LibreWolf addons/theme by starting a browser and going to the `about:addons` URL.
 * Place passwords in `$HOME/.passwords`. You can create a new secure password by redirecting stdout from `genpasswd`.
 * If on Aritx, launch `alsamixer` and raise `PCM` levels to unmute

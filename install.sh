@@ -631,7 +631,7 @@ while true; do
 			# Only ext4/vfat filesystems are supported \\
 			# \\
 			# Note: \\
-			# /var/vm holds virtual machines, $builddir holds yay/makepkg/git builds \\
+			# $vmdir holds virtual machines, $builddir holds yay/makepkg/git builds \\
 			#
 			EOF
 			cat /tmp/disk.swap > /tmp/disk.edit

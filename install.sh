@@ -17,7 +17,7 @@ excluded='BOOT ESP'		# Filesystem labels excluded from LUKS/LVM
 #timezone=''			# As in /usr/share/zoneinfo/
 local_pkgs='vim mupdf'		# Arbitrary pacman(8) packages
 force_dns='1.1.1.1 9.9.9.9' 	# Comment out to use DHCP DNS
-builddir='/var/builds'		# Location of system git/makepkg/yay builds
+builddir='/usr/builds'		# Location of system git/makepkg/yay builds
 vmdir='/var/vm'			# Location of virtual machines for vm.sh
 # rd.luks.name=$luksuuid=$luksdmname is managed by this script
 kernelcmdline='root=LABEL=rootfs rw resume=LABEL=swap quiet bgrt_disable'
@@ -631,7 +631,7 @@ while true; do
 			# Only ext4/vfat filesystems are supported \\
 			# \\
 			# Note: \\
-			# /var/vm holds virtual machines, /var/builds holds yay/makepkg/git builds \\
+			# /var/vm holds virtual machines, $builddir holds yay/makepkg/git builds \\
 			#
 			EOF
 			cat /tmp/disk.swap > /tmp/disk.edit
@@ -927,7 +927,7 @@ alias makepkg='setpriv --reuid=bin --regid=bin --clear-groups makepkg'
 EOF
 
 # Build stuff as bin user, see /etc/doas.conf
-# and /var/builds/.config/yay/config.json
+# and $builddir/.config/yay/config.json
 usermod -c 'system build user' -d "$builddir" bin
 
 chown -R root:bin "$builddir"

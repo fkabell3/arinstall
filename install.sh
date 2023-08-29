@@ -801,7 +801,7 @@ cp "$gitdir/usr.local.bin/"* /mnt/usr/local/bin
 	sed -i 's/nmtui/doas nmtui/' /mnt/usr/local/bin/dmenu_launcher
 mkdir /mnt/etc/skel/.sfeed
 if [ -n "$librewolf_addons" ]; then
-	mkdir -p /mnt/etc/skel/.librewolf/defaultp.default/extensions
+	mkdir -p /mnt/etc/skel/.librewolf/default/extensions
 	cp -r "$gitdir"/etc/skel/dotlibrewolf/* /mnt/etc/skel/.librewolf
 fi
 # Copy non-browser/bashrc files into /mnt/etc
@@ -874,17 +874,17 @@ if [ -n "$librewolf_addons" ]; then
 	librewolf='librewolf-bin'
 	librewolfpath='/etc/skel/.librewolf'
 	chmod -R 700 "$librewolfpath"
-	chmod 755 "$librewolfpath"/defaultp.default/extensions
-	chmod 600 "$librewolfpath"/defaultp.default/user.js
+	chmod 755 "$librewolfpath"/default/extensions
+	chmod 600 "$librewolfpath"/default/user.js
 	# Calculate LibreWolf's about:config layout.css.devPixelsPerPx value
 	# 1680 x 1050 = 1764000, the base resolution which gets 1 as its value
 	perpx="$(awk "BEGIN { print sqrt( $pixels / 1764000)}")"
 	printf '%s\n' \
 		"user_pref(\"layout.css.devPixelsPerPx\", \"$perpx\");" \
-		>> /etc/skel/.librewolf/defaultp.default/user.js
+		>> /etc/skel/.librewolf/default/user.js
 
 	chmod 644 "$librewolfpath"/profiles.ini
-	cd "$librewolfpath"/defaultp.default/extensions
+	cd "$librewolfpath"/default/extensions
 	printf '%s\n' 'Downloading LibreWolf extensions...'
 	for addon in $librewolf_addons; do
 		curl -o "$addon" "$(curl \
@@ -963,7 +963,7 @@ fi
 printf '%s\n' "$username:$userpasswd" | chpasswd
 [ -n "$librewolf_addons" ] && sed -i \
 	"s/\/\/user_pref(\"browser.download.dir\", \"\/home\/NAME\/downloads\");/user_pref(\"browser.download.dir\", \"\/home\/$username\/downloads\");/" \
-	/home/$username/.librewolf/defaultp.default/user.js
+	/home/$username/.librewolf/default/user.js
 
 pwck -s
 grpck -s

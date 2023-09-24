@@ -42,4 +42,7 @@ _ps() {
 	esac | grep -Fv \[
 }
 
+# $HOME/downloads is used instead but this directory keeps spawning
+rmdir "$HOME"/Downloads 2>/dev/null
+
 [ -f "$HOME"/.bashrc ] && . "$HOME"/.bashrc

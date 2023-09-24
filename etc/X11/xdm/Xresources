@@ -5,7 +5,7 @@ xlogin*Background: #000000
 ! Add a border to the login window
 !xlogin*borderWidth: 1
 
-! String displayed on top of login window; CLIENTHOST means long hostname
+! String displayed on top of login window; CLIENTHOST means hostname
 xlogin*greeting: CLIENTHOST  
 ! Font for said string
 xlogin*greetFace: FreeSans-24:bold:italic

@@ -18,8 +18,8 @@ grep -Eo '/[^ ]*|(http|https)://[a-zA-Z0-9./?=_%:+-]*[.][a-z]*[/]?[a-zA-Z0-9./?=
 	sort -u > "$raw"
 
 while read line; do
-	if [ -f "$line" ] || printf "%s" "$line" | grep 'http'; then
-		printf "%s\n" "$line" >> "$parsed"
+	if [ -f "$line" ] || printf '%s' "$line" | grep 'http'; then
+		printf '%s\n' "$line" >> "$parsed"
 	fi
 done < "$raw"
 

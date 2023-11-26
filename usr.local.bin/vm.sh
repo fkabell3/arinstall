@@ -24,9 +24,9 @@ iface="$(awk '$2 == 00000000 { print $7, $1 }' /proc/net/route | sort | \
 
 usage() {
 	printf '%s' "Syntax error: Usage: $(basename "$0" 2>/dev/null) "
-	subdirs="$(find /var/vm/* -exec sh -c '[ -f "$0"/*.iso ] || \
+	subdirs="$(find "$dir"* -exec sh -c '[ -f "$0"/*.iso ] || \
 		[ -f "$0"/disk.qcow2 ] || [ -f "$0"/disk2.qcow2 ]' '{}' \
-		\; -print | sed 's/\/var\/vm\///g')"
+		\; -print | sed "s|$dir/||g")"
 	if [ "$(printf '%s' "$subdirs" | wc -w)" -eq 1 ]; then
 		printf '%s' "$subdirs"
 	elif [ "$(printf '%s' "$subdirs" | wc -w)" -ge 2 ]; then

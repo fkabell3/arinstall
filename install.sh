@@ -689,7 +689,7 @@ fi
 clear
 printf '%s\n%s' \
 	'From this point on, if the script fails (eg. curl(1) hangs), reboot before trying again.' \
-	'Press ENTER to wipe partition table and install Linux, CTRL/C to abort.'
+	'Press ENTER to wipe partition table and install Linux, CNTL/C to abort.'
 read REPLY
 
 sectorsize="$(cat /sys/block/"$disk"/queue/hw_sector_size)"

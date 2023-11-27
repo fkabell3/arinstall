@@ -48,7 +48,7 @@ if [ X"$1" = X'copy' ]; then
 		fi
 	elif [ -z "$2" ]; then
 		# Read from stdin
-		# If interactive, CTRL/D to stop
+		# If interactive, CNTL/D to stop
 		superclip -in
 	else
 		usage

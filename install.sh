@@ -17,7 +17,7 @@ excluded='BOOT ESP'                   # Filesystem labels excluded from LUKS/LVM
 #timezone=''                          # As in /usr/share/zoneinfo/
 local_pkgs='vim mupdf'                # Arbitrary pacman(8) packages
 force_dns='1.1.1.1 9.9.9.9'           # Comment out to use DHCP DNS
-builddir='/usr/builds'                # Location of system git/makepkg/yay builds
+builddir='/usr/local/src'             # Location of system git/makepkg/yay builds
 vmdir='/var/vm'                       # Location of virtual machines for vm.sh
 # rd.luks.name=$luksuuid=$luksdmname is managed by this script
 kernelcmdline='root=LABEL=rootfs rw resume=LABEL=swap quiet bgrt_disable'

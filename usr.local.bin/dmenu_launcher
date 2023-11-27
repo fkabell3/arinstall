@@ -32,10 +32,12 @@ while true; do
 			exec st -w '' nmtui
 		;;
 		'Virtual Machines')
-			vm="$(for vmdir in /var/vm/*; do
-				[ -d "$vmdir" ] && basename "$vmdir"
-			done | dmenu -i -l "$DMENULINENUM")"
-			exec st -e doas vm.sh "$vm" delay
+			vm="$(find /var/vm/* -exec sh -c '[ -f "$0"/*.iso ] || \
+				[ -f "$0"/disk.qcow2 ] || \
+				[ -f "$0"/disk2.qcow2 ]' '{}' \; -print | \
+				sed 's|/var/vm/||g' | \
+				dmenu -i -l "$DMENULINENUM")"
+			[ -n "$vm" ] && exec st -e doas vm.sh "$vm" delay
 		;;
 		Passwords)
 			dmenu_passwd && exit 0

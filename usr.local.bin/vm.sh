@@ -27,15 +27,17 @@ usage() {
 	subdirs="$(find "$dir"* -exec sh -c '[ -f "$0"/*.iso ] || \
 		[ -f "$0"/disk.qcow2 ] || [ -f "$0"/disk2.qcow2 ]' '{}' \
 		\; -print | sed "s|$dir/||g")"
-	if [ "$(printf '%s' "$subdirs" | wc -w)" -eq 1 ]; then
-		printf '%s' "$subdirs"
+	if [ "$(printf '%s' "$subdirs" | wc -w)" -eq 0 ]; then
+		printf '%s' '<VM subdirectory> '
+	elif [ "$(printf '%s' "$subdirs" | wc -w)" -eq 1 ]; then
+		printf '%s' "$subdirs "
 	elif [ "$(printf '%s' "$subdirs" | wc -w)" -ge 2 ]; then
 		printf '%s' '{'
 		for vmdir in $subdirs; do
 			printf '%s' "$vmdir | "
-		done | sed 's/...$/}/'
+		done | sed 's/...$/} /'
 	fi
-	printf '%s\n' ' [delay]'
+	printf '%s\n' '[delay]'
 	delayexit 255
 }
 

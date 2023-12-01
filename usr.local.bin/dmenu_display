@@ -2,19 +2,25 @@
 
 while true; do
 	action="$(printf '%s\n' \
-		'Brightness' \
 		'Screenshot' \
+		'Brightness' \
+		'Detect Monitor' \
 		'Lock Screen' | \
 		dmenu -i -l "$DMENULINENUM")"
 
 	[ -z "$action" ] && exit 1
 	
 	case "$action" in
+		Screenshot)
+			dmenu_screenshot && exit 0
+		;;
 		Brightness)
 			dmenu_brightness && exit 0
 		;;
-		Screenshot)
-			dmenu_screenshot && exit 0
+		'Detect Monitor')
+			monitor="$(xrandr | awk '$1 !~ /^eDP/ &&
+				$2 ~ /^connected/ { print $1 }')"
+			xrandr --output "$monitor" --above eDP1 --auto && exit 0
 		;;
 		'Lock Screen')
 			slock && exit 0

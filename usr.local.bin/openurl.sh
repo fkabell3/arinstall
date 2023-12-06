@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Unfortunately doesn't read from rc or profile
-EDITOR=vim
+EDITOR=/usr/bin/vi
 
 die() {
 	rm "$raw" "$parsed"

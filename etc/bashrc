@@ -8,7 +8,7 @@ case "$-" in
 esac
 
 PS1='[\u@\h \w]\$ '
-EDITOR=/bin/vim
+EDITOR=/usr/bin/vi
 PAGER=/bin/less
 SYSTEMD_PAGER=
 export EDITOR PAGER SYSTEMD_PAGER

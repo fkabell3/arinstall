@@ -1,24 +1,24 @@
 #!/bin/sh -e
 
-#disk=''                              # Exclude /dev/ prefix
-#disklabel=''                         # MBR || GPT, GPT depends on EFI
-#bootloader=''                        # Limine || EFIstub, EFIstub depends on GPT
-#uselvm=''                            # Boolean
-vgname='vg'                           # Volume group name
-#useluks=''                           # Boolean, LUKS depends on LVM
-luksdmname='luks'                     # LUKS device mapper name
-#lukspasswd=''                        # LUKS disk encryption password
-excluded='BOOT ESP'                   # Filesystem labels excluded from LUKS/LVM
-#rootpasswd=''                        # Root password
-#username=''                          # User created/added to :wheel
-#usergecos=''                         # 5th field of passwd database
-#userpasswd=''                        # User password
-#hostname=''                          # Long hostname
-#timezone=''                          # As in /usr/share/zoneinfo/
-local_pkgs='vi mupdf'                 # Arbitrary pacman(8) packages
-force_dns='1.1.1.1 9.9.9.9'           # Comment out to use DHCP DNS
-builddir='/usr/local/src'             # Location of system git/makepkg/yay builds
-vmdir='/var/vm'                       # Location of virtual machines for vm.sh
+#disk=''                             # Exclude /dev/ prefix
+#disklabel=''                        # MBR || GPT, GPT depends on EFI
+#bootloader=''                       # Limine || EFIstub, EFIstub depends on GPT
+#uselvm=''                           # Boolean
+vgname='vg'                          # Volume group name
+#useluks=''                          # Boolean, LUKS depends on LVM
+luksdmname='luks'                    # LUKS device mapper name
+#lukspasswd=''                       # LUKS disk encryption password
+excluded='BOOT ESP'                  # Filesystem labels excluded from LUKS/LVM
+#rootpasswd=''                       # Root password
+#username=''                         # User created/added to :wheel
+#usergecos=''                        # 5th field of passwd database
+#userpasswd=''                       # User password
+#hostname=''                         # Long hostname
+#timezone=''                         # As in /usr/share/zoneinfo/
+local_pkgs='vi mupdf'                # Arbitrary pacman(8) packages
+force_dns='1.1.1.1 9.9.9.9'          # Comment out to use DHCP DNS
+builddir='/usr/local/src'            # Location of system git/makepkg/yay builds
+vmdir='/var/vm'                      # Location of virtual machines for vm.sh
 # rd.luks.name=$luksuuid=$luksdmname is managed by this script
 kernelcmdline='root=LABEL=rootfs rw resume=LABEL=swap quiet bgrt_disable'
 # Enabled system services

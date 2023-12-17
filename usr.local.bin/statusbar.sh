@@ -3,7 +3,7 @@
 batterypath=$(find /sys/class/power_supply/BAT* | head -n 1)
 
 while true; do
-	nmcli con show --active | grep vpn >/dev/null 2>&1
+	nmcli con show --active | grep 'vpn\|wireguard' >/dev/null 2>&1
 	if [ "$?" = 0 ]; then
 		vpn='[VPN] '
 	else

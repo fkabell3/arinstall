@@ -1,4 +1,5 @@
 # To Do/Bugs
+* Fix bug where calculating swap size fails if there is <1GB of RAM, line 114
 * Document everything, patch the dwm, dmenu, etc man pages.
 * Instead of patching everything locally, set up git server so patches will not break when suckless.org updates their programs.
 * Port script to ARM (not sure how big of a task this is besides updating GPT codes).

@@ -21,11 +21,9 @@ alias ip='ip -c'
 alias copy='clipboard.sh copy'
 alias paste='clipboard.sh paste'
 
-#set -o vi
-
+HISTCONTROL=ignoredups:erasedups
 # Combine history across TTYs
 #PROMPT_COMMAND='history -a; history -c; history -r'
-HISTCONTROL=ignoredups:erasedups
 
 _ps() {
 	case "$1" in

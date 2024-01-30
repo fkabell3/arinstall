@@ -2,7 +2,7 @@
 
 dir="$HOME"/images
 
-if [ -f "$dir"/screenshot"$(date +%d%b%g)" ]; then
+if [ -f "$dir"/screenshot"$(date +%d%b%g)".png ]; then
 	datetime=$(date +%d%b%g-%T)
 else
 	datetime=$(date +%d%b%g)

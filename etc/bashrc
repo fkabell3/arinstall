@@ -8,10 +8,11 @@ case "$-" in
 esac
 
 PS1='[\u@\h \w]\$ '
-EDITOR=/usr/bin/vi
+EDITOR=/usr/bin/ex
+VISUAL=/usr/bin/vi
 PAGER=/bin/less
 SYSTEMD_PAGER=
-export EDITOR PAGER SYSTEMD_PAGER
+export EDITOR VISUAL PAGER SYSTEMD_PAGER
 
 alias ls='ls -F --color=auto'
 alias ll='ls -hl'

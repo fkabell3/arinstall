@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Unfortunately doesn't read from rc or profile
-EDITOR=/usr/bin/vi
+VISUAL=/usr/bin/vi
 
 die() {
 	rm "$raw" "$parsed"
@@ -33,7 +33,7 @@ case "$selection" in
 		eval "$BROWSER $selection"
 	;;
 	*)
-		[ -f "$selection" ] && eval st -e "$EDITOR" "$selection"
+		[ -f "$selection" ] && eval st -e "$VISUAL" "$selection"
 	;;
 esac
 

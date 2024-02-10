@@ -35,7 +35,7 @@ The installer tries to abstract the installation process in a meaningful way.
 Installation Instructions:
 
 * Download, burn, and boot into an [Artix](https://artixlinux.org/download.php) or [Arch](https://archlinux.org/download/) Linux installation enviroment.<br>
-It doesn't really matter which one you choose but Arch makes connecting to WiFi easier and has `vim` preinstalled.
+It doesn't really matter which one you choose but Arch makes connecting to WiFi easier.<br>
 * Connect to network.<br>
 Either plug in an Ethernet cable or for WiFi try:<br>
 <details>

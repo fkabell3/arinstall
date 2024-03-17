@@ -823,7 +823,7 @@ elif [ X"$targetos" = X'artix' ]; then
 	rm -rf /mnt/etc/bash/*
 	cp "$gitdir"/etc/bashrc /mnt/etc/bash/bashrc
 	sed -i '1 s/.*/# \/etc\/bash\/bashrc/' /mnt/etc/bash/bashrc
-	sed -i '13d' /mnt/etc/bash/bashrc
+	sed -i '14d' /mnt/etc/bash/bashrc
 	sed -i 's/ SYSTEMD_PAGER//' /mnt/etc/bash/bashrc
 fi
 builddir=/mnt"$builddir"

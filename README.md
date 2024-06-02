@@ -1,6 +1,6 @@
 # Artix/Arch Linux Installer
 
-arinstall is a Linux installer written in Bourne shell. It is capable of cross installing Artix (OpenRC) from the Arch live installation medium and vice versa. Bloated software is avoided wherever possible. BIOS/MBR, EFI/{PMBR,GPT}, LVM, LUKS disk encryption, and HiDPI are all supported.<br>
+arinstall is a Linux installer written in POSIX shell. It is capable of cross installing Artix (OpenRC) from the Arch live installation medium and vice versa. Bloated software is avoided wherever possible. BIOS/MBR, EFI/{PMBR,GPT}, LVM, LUKS disk encryption, and HiDPI are all supported.<br>
 
 suckless.org's `dwm` and `dmenu` enable a keyboard-centric graphical interface. Scripts placed in `/usr/local/bin/` allow for the following:
 

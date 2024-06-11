@@ -983,8 +983,12 @@ setpriv --reuid=bin --regid=bin --clear-groups --reset-env \
 	yay --save --pacman /usr/bin/pacman
 setpriv --reuid=bin --regid=bin --clear-groups --reset-env \
 	yay --removemake --noconfirm -S \
-	dashbinsh devour $librewolf otf-san-francisco-mono \
-	doas-sudo-shim xbanish
+	dashbinsh devour $librewolf doas-sudo-shim xbanish
+# warning: this package ignores checksums since the package may
+# be out of date due to Apple Inc. updating the font
+setpriv --reuid=bin --regid=bin --clear-groups --reset-env \
+	yay --removemake --noconfirm -S \
+	otf-san-francisco-mono --mflags --skipchecksums
 setpriv --reuid=bin --regid=bin --clear-groups \
 	yay --removemake --noconfirm -S keynav
 

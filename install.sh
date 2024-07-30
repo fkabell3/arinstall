@@ -1009,7 +1009,8 @@ fi
 
 for srcdir in dwm dmenu st tabbed slock sfeed herbe; do
 	cd "$builddir/$srcdir"
-	patch -p 1 < "$builddir/$srcdir/$srcdir-arinstall.diff"
+	patch -fp 1 < "$builddir/$srcdir/$srcdir-arinstall.diff" || true
+	rm -f *.orig* *.rej*
 done
 # Calculate how big some suckless.org programs will be
 # bc(1) is not available

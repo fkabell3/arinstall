@@ -975,7 +975,8 @@ getent shadow bin vm
 # since doas-sudo-shim has not been installed yet
 ln -s /usr/bin/doas /usr/local/bin/sudo
 cd "$builddir"/yay-bin && \
-	setpriv --reuid=bin --regid=bin --clear-groups makepkg --noconfirm -ci
+	setpriv --reuid=bin --regid=bin --clear-groups makepkg --noconfirm -ci || \
+	pacman --noconfirm -U yay-bin*pkg*
 rm /usr/local/bin/sudo
 # doas.conf only works when full pacman path is set with yay --save
 # also doas.conf must have full pacman path or else permission denied

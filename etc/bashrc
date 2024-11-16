@@ -7,7 +7,7 @@ case "$-" in
 	;;
 esac
 
-PS1='[\u@\h \w]\$ '
+PS1='$PWD \$ '
 PATH=$PATH:
 CDPATH=.:..:$HOME
 EDITOR=/usr/bin/ex

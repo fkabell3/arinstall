@@ -19,7 +19,7 @@ export DMENULINENUM
 
 # LibreWolf/Firefox font/scale settings can be changed with 
 # about:config -> layout.css.devPixelsPerPx
-BROWSER="librewolf -P default"
+BROWSER='librewolf -P default'
 export BROWSER
 
 # Permit any user to run X applications (needed for /usr/local/bin/vm.sh)
@@ -30,16 +30,13 @@ xhost +local:
 keynav &
 
 # Enable translucency
-picom --blur-method box &
+picom --backend xrender --blur-method box &
 
 # Enable status bar
 statusbar.sh &
 
 # Mute volume
 #amixer sset Master 0% >/dev/null 2>&1
-
-# Start off in floating layout
-#(sleep .3; xdotool key super+f) &
 
 # Start the suckless.org Dynamic Window Manager
 exec dwm

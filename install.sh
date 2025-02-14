@@ -1160,7 +1160,8 @@ clear
 printf '%s\n' 'Linux installation script completed.' \
 	'If your computer does not boot see TROUBLESHOOTING.md.' \
 	'<https://github.com/fkabell3/arinstall/blob/main/TROUBLESHOOTING.md>' \
-	'Now reboot and God bless!'
+	'Now reboot and hopefully it works!'
+
 exit 0
 #^^^^^^^
 fi
